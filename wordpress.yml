@@ -1,0 +1,32 @@
+---
+- hosts: all
+  roles:
+    - common
+
+- hosts: web
+  roles:
+    - WebServer
+    - WordPress
+    - php
+  tasks:
+    - name: Restarting httpd
+      service: name=httpd state=restarted
+    - name: Restarting firewalld
+      service: name=firewalld state=restarted
+    - name: Disabling selinux
+      selinux: state=disabled
+
+- hosts: db
+  roles:
+    - mariadb
+  tasks:
+    - name: restarting mariadb
+      service: name=mariadb.service state=restarted
+    - name: restarting firewalld
+      service: name=firewalld state=restarted
+    - name: Stopping selinux
+      selinux: state=disabled
+- hosts: web 
+  tasks:
+    - name: restarting httpd
+      service: name=firewalld state=restarted

@@ -1,0 +1,4 @@
+---
+# tasks file for common
+- name: Downloading epel-release
+  package: name=epel-release state=present

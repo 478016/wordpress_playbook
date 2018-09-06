@@ -1,0 +1,22 @@
+---
+# tasks file for mariadb
+- name: Installing Mariadb
+  package: name=mariadb-server state=present
+- name: Installing Python-pip
+  package: name=python-pip state=present
+- name: Installing MySQL-python
+  package: name=MySQL-python state=present
+- name: Starting mariadb
+  service: name=mariadb.service state=started enabled=yes
+- name: Creating database
+  mysql_db: name=tables state=present
+- name: Creating users
+  mysql_user: name=unknown password=qwerty priv=tables.**:ALL host={{ item }} state=present
+  with_items:
+    - 192.168.153.31
+    - 192.168.153.33
+- name: Adding port
+  firewalld: 
+    port: 3306/tcp
+    permanent: true
+    state: enabled

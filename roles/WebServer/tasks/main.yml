@@ -1,0 +1,16 @@
+---
+# tasks file for WebServer
+- name: Installing Apache Webserver
+  package: name=httpd state=present
+- name: Starting httpd
+  service: name=httpd state=started
+- name: Enabling httpd
+  service: name=httpd enabled=yes
+- name: Adding port
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    zone: public
+- name: Re-loading firewall
+  command: firewall-cmd --reload
